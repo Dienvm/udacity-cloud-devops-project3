@@ -141,27 +141,6 @@ commands:
           when: on_fail
 
 jobs:
-  send-notification:
-    docker:
-      - image: cimg/node:13.8.0
-    steps:
-      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
   build-frontend:
     docker:
       - image: cimg/node:13.13.0
@@ -501,10 +480,6 @@ jobs:
             chmod +x .circleci/scripts/cleanupOldStack.sh && .circleci/scripts/cleanupOldStack.sh
 
 workflows:
-  send-notification:
-    jobs:
-      - notify:
-          context: slack-secret
   default:
     jobs:
       - build-frontend
