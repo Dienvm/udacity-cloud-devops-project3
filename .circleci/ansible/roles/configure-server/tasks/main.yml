@@ -1,0 +1,44 @@
+---
+- name: generate env
+  script: ../scripts/generateEnv.sh
+
+- name: Install the gpg key for nodejs LTS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Install the nodejs {{ NODEJS_VERSION }} LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }} bionic main"
+    state: present
+    update_cache: yes
+
+- name: Remove nodesource
+  file:
+    path: /etc/apt/sources.list.d/deb_nodesource_com_node_13_x.list
+    state: absent
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+- name: Remove dependence that are no long required
+  become: yes
+  apt:
+    autoremove: yes
+- name: Install dependence
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: present
+    update_cache: yes
+- name: Install pm2
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
