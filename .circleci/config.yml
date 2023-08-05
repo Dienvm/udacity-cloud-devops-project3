@@ -68,20 +68,16 @@ jobs:
           key: backend-build
 
   test-frontend:
-    docker:
-      # Docker image here
-    steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+    docker: circleci/node:13.8.0
+    steps: cd frontend
+      npm install
+      npm run test
 
   test-backend:
-    docker:
-      # Docker image here
-    steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+    docker: circleci/node:13.8.0
+    steps: cd backend
+      npm install
+      npm run test
 
   scan-frontend:
     docker:
