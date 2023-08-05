@@ -141,7 +141,7 @@ commands:
           when: on_fail
 
 jobs:
-  slack-notification:
+  send-notification:
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -501,7 +501,7 @@ jobs:
             chmod +x .circleci/scripts/cleanupOldStack.sh && .circleci/scripts/cleanupOldStack.sh
 
 workflows:
-  slack-notification:
+  send-notification:
     jobs:
       - notify:
           context: slack-secret
