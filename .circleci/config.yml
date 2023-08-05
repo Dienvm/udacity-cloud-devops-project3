@@ -141,7 +141,7 @@ commands:
           when: on_fail
 
 jobs:
-  notify:
+  slack-notification:
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -242,7 +242,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
           key: scan-frontend
@@ -259,7 +259,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical
       - save_cache:
           paths: [backend/node_modules]
           key: scan-backend
@@ -501,7 +501,7 @@ jobs:
             chmod +x .circleci/scripts/cleanupOldStack.sh && .circleci/scripts/cleanupOldStack.sh
 
 workflows:
-  send-notification:
+  slack-notification:
     jobs:
       - notify:
           context: slack-secret
