@@ -217,14 +217,9 @@ jobs:
       - restore_cache:
           keys: [scan-frontend]
       - run:
-          name: Scan frontend
-          command: |
-            cd frontend
-            npm install
-            npm audit fix --audit-level=critical
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: scan-frontend
+        cd frontend
+        npm install
+        npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -234,14 +229,10 @@ jobs:
       - restore_cache:
           keys: [scan-backend]
       - run:
-          name: Scan backend
-          command: |
-            cd backend
-            npm install
-            npm audit fix --audit-level=critical
-      - save_cache:
-          paths: [backend/node_modules]
-          key: scan-backend
+        cd backend
+        npm install
+        ## npm install oauth-sign@^0.9.0
+        npm audit --audit-level=critical
 
   deploy-infrastructure:
     executor: aws/default
