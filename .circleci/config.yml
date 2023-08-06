@@ -525,7 +525,7 @@ workflows:
           filters:
             <<: *filters-main
           requires: [smoke-test]
-      - cleanup:
-          filters:
-            <<: *filters-main
-          requires: [cloudfront-update]
+      # - cleanup:
+      #     filters:
+      #       <<: *filters-main
+      #     requires: [cloudfront-update]
