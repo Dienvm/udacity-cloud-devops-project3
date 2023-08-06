@@ -279,8 +279,8 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udapeople
       #Rollback
-      - delete_s3:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - delete_s3:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
@@ -315,8 +315,8 @@ jobs:
             ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
       - destroy-stack:
           stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      - delete_s3:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - delete_s3:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
