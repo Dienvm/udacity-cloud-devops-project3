@@ -68,17 +68,17 @@ commands:
                 }
               ]
             }
-  # destroy-stack:
-  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-  #   parameters:
-  #     stack_name:
-  #       type: string
-  #   steps:
-  #     - run:
-  #         name: Destroy environments
-  #         when: on_fail
-  #         command: |
-  #           aws cloudformation delete-stack --stack-name "<<parameters.stack_name>>"
+  destroy-stack:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      stack_name:
+        type: string
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name "<<parameters.stack_name>>"
 
   delete_s3:
     description: Delete all S3
@@ -313,12 +313,12 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
-      - destroy-stack:
-          stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       # - delete_s3:
       #     id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-stack:
-          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   configure_node_exporter:
     working_directory: ~/project
@@ -389,8 +389,8 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - delete_s3:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-stack:
-          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   deploy-backend:
     working_directory: ~/project
@@ -413,8 +413,8 @@ jobs:
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       - delete_s3:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-stack:
-          stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
 
   smoke-test:
     working_directory: ~/project
@@ -441,13 +441,13 @@ jobs:
       - run:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
-      - destroy-stack:
-          stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      - delete_s3:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-stack:
-          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations
+      # - destroy-stack:
+      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - delete_s3:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - revert-migrations
 
   cloudfront-update:
     working_directory: ~/project
