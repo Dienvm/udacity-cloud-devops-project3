@@ -68,17 +68,17 @@ commands:
                 }
               ]
             }
-  destroy-stack:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      stack_name:
-        type: string
-    steps:
-      - run:
-          name: Destroy environments
-          when: on_fail
-          command: |
-            aws cloudformation delete-stack --stack-name "<<parameters.stack_name>>"
+  # destroy-stack:
+  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+  #   parameters:
+  #     stack_name:
+  #       type: string
+  #   steps:
+  #     - run:
+  #         name: Destroy environments
+  #         when: on_fail
+  #         command: |
+  #           aws cloudformation delete-stack --stack-name "<<parameters.stack_name>>"
 
   delete_s3:
     description: Delete all S3
@@ -126,20 +126,20 @@ commands:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
 
-  revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      force_revert:
-        type: boolean
-        default: false
-    steps:
-      - run:
-          name: Revert migrations
-          command: |
-            cd ~/project/backend
-            npm install
-            npm run migrations:revert
-          when: on_fail
+  # revert-migrations:
+  #   description: Revert the last migration if successfully run in the current workflow.
+  #   parameters:
+  #     force_revert:
+  #       type: boolean
+  #       default: false
+  #   steps:
+  #     - run:
+  #         name: Revert migrations
+  #         command: |
+  #           cd ~/project/backend
+  #           npm install
+  #           npm run migrations:revert
+  #         when: on_fail
 
 jobs:
   example-job:
