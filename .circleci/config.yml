@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   aws: circleci/aws-cli@3.1.5
   python: circleci/python@2.1.1
-  slack: circleci/slack@4.12.1
+  slack: circleci/slack@4.4.4
 
 executors:
   node:
@@ -148,7 +148,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - slack/notify:
-          channel: D05M665TVQ8
+          event: always
   build-frontend:
     docker:
       - image: cimg/node:13.13.0
@@ -279,8 +279,8 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udapeople
       #Rollback
-      # - delete_s3:
-      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - delete_s3:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
@@ -298,6 +298,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+
   configure-infrastructure:
     working_directory: ~/project
     docker:
