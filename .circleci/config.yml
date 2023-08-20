@@ -393,34 +393,28 @@ jobs:
       #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   deploy-backend:
-    docker:
-      # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.16
     working_directory: ~/project
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ['b2:9f:fe:f4:2a:f1:6b:8f:45:ca:78:ea:de:cb:da:c1']
+          fingerprints: ['87:30:2f:33:0a:0e:37:d2:13:e7:68:82:fb:43:62:c0']
+      - restore_cache:
+          keys:
+            - be-build--{{ .Revision  }}
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
+      - install_ansible
       - run:
           name: Deploy backend
           command: |
-            cd backend
-            npm install
-            npm run build
-            cd ..
-            # Zip the directory
-            tar -C backend -czvf .circleci/ansible/roles/artifact/artifact.tar.gz .
-            cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
-
+            tar -C backend -czvf .circleci/ansible/roles/deploy/artifact/artifact.tar.gz .
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+      # - delete_s3:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
   smoke-test:
     docker:
       # Lightweight Docker image
