@@ -396,12 +396,13 @@ jobs:
     docker:
       # Docker image here that supports Ansible
       - image: python:3.7-alpine3.16
+    working_directory: ~/project
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: ['b2:9f:fe:f4:2a:f1:6b:8f:45:ca:78:ea:de:cb:da:c1']
       - attach_workspace:
-          at: .circleci/ansible/
+          at: ~/
       - run:
           name: Install dependencies
           command: |
